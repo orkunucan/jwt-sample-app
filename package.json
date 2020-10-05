@@ -2,6 +2,7 @@
   "name": "jwt-sample-app",
   "version": "0.0.0",
   "scripts": {
+    "copyfiles": "copyfiles -u 1 src/**/*.html src/**/*.css dist/",
     "start": "cross-env NODE_ENV=production ts-node --transpile-only src/server.ts",
     "dev": "cross-env NODE_ENV=development nodemon --watch src --delay 1 --exec 'ts-node' src/server.ts",
     "test": "jest --forceExit --detectOpenHandles",
@@ -41,6 +42,7 @@
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.11.2",
     "@types/supertest": "^2.0.10",
+    "copyfiles": "^2.4.0",
     "nodemon": "^2.0.4",
     "supertest": "^5.0.0",
     "tslint": "^6.1.3",
