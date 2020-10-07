@@ -4,6 +4,7 @@ import * as express from 'express';
 import * as helmet from 'helmet';
 import * as hpp from 'hpp';
 import * as logger from 'morgan';
+import * as path from 'path';
 import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
 
@@ -19,6 +20,7 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
+    this.initializeStaticFiles();
     this.initializeSwagger();
     this.initializeErrorHandling();
   }
@@ -54,6 +56,17 @@ class App {
       this.app.use('/', route.router);
     });
   }
+
+  private initializeStaticFiles() {
+    console.log(path.join(__dirname, 'public', 'assets'));
+    
+    if (this.env) {
+      this.app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+    } else {
+      this.app.use('/assets', express.static(path.join(__dirname, 'public', 'assets'), { maxAge: '7d'}));
+    }
+  }
+
   private initializeSwagger() {
     const swaggerJSDoc = require('swagger-jsdoc');
     const swaggerUi = require('swagger-ui-express');

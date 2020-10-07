@@ -1,15 +1,8 @@
-import { Request } from 'express';
-import { User } from './users.interface';
-
 export interface DataStoredInToken {
-  id: number;
-}
-
-export interface TokenData {
-  token: string;
-  expiresIn: number;
-}
-
-export interface RequestWithUser extends Request {
-  user: User;
+  given_name: string;
+  family_name: string;
+  preferred_username: string;
+  email: string;
+  sub: string;
+  iss: string;
 }
