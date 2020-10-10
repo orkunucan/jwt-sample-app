@@ -10,7 +10,7 @@ class TokenController {
     const userJwtData: CreateJwtTokenModel = req.body;
     try {
       const tokenData = this.tokenService.createToken(userJwtData);
-      res.status(200).json(tokenData);
+      res.status(201).json(tokenData);
     } catch (error) {
       next(error);
     }
@@ -20,7 +20,11 @@ class TokenController {
     const userJwtData: ValidateJwtTokenModel = req.body;
     try {
       const validationResult = this.tokenService.validateToken(userJwtData);
-      res.status(200).json(validationResult);      
+      if (validationResult.tokeIsValid) {
+        res.status(202).json(validationResult);      
+      } else {
+        res.status(400).json(validationResult); 
+      }
     } catch (error) {
       next(error);
     }

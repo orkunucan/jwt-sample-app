@@ -27,17 +27,38 @@ class TokenService {
   }
 
   public validateToken(tokenData: ValidateJwtTokenModel): TokenStateModel {
+    const verificationResponse = this.verifySafe(tokenData.token, tokenData.secret);
+    if (verificationResponse.tokeIsValid) {
+      return verificationResponse;
+    }
+
+    return { 
+      tokeIsValid: false, 
+      tokenData: this.decodeSafe(tokenData.token)
+    };
+  }
+
+  private verifySafe(token: string, secret: string) {
     try {
-      const verificationResponse = jwt.verify(tokenData.token, tokenData.secret);
+      const verificationResponse = jwt.verify(token, secret);
+
       return { 
         tokeIsValid: verificationResponse != null, 
-        tokenData: verificationResponse 
+        tokenData: verificationResponse
       };
     } catch (error) {
       return { 
         tokeIsValid: false, 
-        tokenData: null 
+        tokenData: null
       };
+    }
+  }
+
+  private decodeSafe(token: string): null | { [key: string]: any } | string {
+    try {
+      return jwt.decode(token);
+    } catch (error) {
+      return null;
     }
   }
 }

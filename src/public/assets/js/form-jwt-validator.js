@@ -21,6 +21,11 @@
                             console.log(r);
                         },
                         error: (err) => {
+                            if(err.status && err.status === 400) {
+                                document.getElementById('token-response').innerHTML = JSON.stringify(err.responseJSON, undefined, 4);
+                                console.log(err);
+                                return;
+                            }
                             throw err;
                         },
                       });
