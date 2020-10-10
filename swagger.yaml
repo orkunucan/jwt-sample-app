@@ -1,125 +1,104 @@
 tags:
-- name: users
-  description: users API
+- name: tokens
+  description: tokens API
 
 paths:
-# [GET] users
-  /users:
-    get:
-      tags: 
-      - users
-      summary: Find All Users
-      responses:
-        200:
-          description: 'OK'
-        500:
-          description: 'Server Error'
-
-# [POST] users
+# [POST] generate-jwt
+  /api/v1/tokens/generate-jwt/:
     post:
       tags:
-      - users
-      summary: Add User
+      - tokens
+      summary: Generate JWT Token
       parameters:
       - name: body
         in: body
-        description: user Data
+        description: CreateJwtTokenModel
         required: true
         schema:
-          $ref: '#/definitions/users'
+          $ref: '#/definitions/create-jwt-token-model'
       responses:
         201:
           description: 'Created'
         400:
           description: 'Bad Request'
-        409:
-          description: 'Conflict'
         500:
           description: 'Server Error'
 
-# [GET] users/id
-  /users/{id}:
-    get:
-      tags:
-      - users
-      summary: Find User By Id
-      parameters:
-      - name: id
-        in: path
-        description: User Id
-        required: true
-        type: integer
-      responses:
-        200:
-          description: 'OK'
-        409:
-          description: 'Conflict'
-        500:
-          description: 'Server Error'
-
-# [PUT] users/id
-    put:
-      tags:
-      - users
-      summary: Update User By Id
-      parameters:
-      - name: id
-        in: path
-        description: user Id
-        required: true
-        type: integer
-      - name: body
-        in: body
-        description: user Data
-        required: true
-        schema:
-          $ref: '#/definitions/users'
-      responses:
-        200:
-          description: 'OK'
-        400:
-          description: 'Bad Request'
-        409:
-          description: 'Conflict'
-        500:
-          description: 'Server Error'
-
-# [DELETE] users/id
-    delete:
-      tags:
-      - users
-      summary: Delete User By Id
-      parameters:
-      - name: id
-        in: path
-        description: user Id
-        required: true
-        type: integer
-      responses:
-        200:
-          description: 'OK'
-        409:
-          description: 'Conflict'
-        500:
-          description: 'Server Error'
+# [POST] validate-jwt
+/api/v1/tokens/validate-jwt/:
+  post:
+    tags:
+    - tokens
+    summary: Validate JWT Token
+    parameters:
+    - name: body
+      in: body
+      description: ValidateJwtTokenModel
+      required: true
+      schema:
+        $ref: '#/definitions/validate-jwt-token-model'
+    responses:
+      202:
+        description: 'Accepted'
+      400:
+        description: 'Bad Request'
+      500:
+        description: 'Server Error'
 
 # definitions
 definitions:
-  users:
+  create-jwt-token-model:
     type: object
     required:
-        - email
-        - password
+      - givenName
+      - familyName
+      - preferredUsername
+      - email
+      - sub
+      - iss
+      - exp
+      - secret
     properties:
-      id:
-        type: integer
-        description: user Id
+      givenName:
+        type: string
+        description: User Given Name(First Name)
+      familyName:
+        type: string
+        description: User Fammiy Name(Last Name)
+      preferredUsername:
+        type: string
+        description: User Preferred UserName
       email:
         type: string
-        description: user Email
-      password:
+        format: email
+        description: User email
+      sub:
         type: string
-        description: user Password
+        description: JWT Subject
+      iss:
+        type: string
+        format: uri
+        description: JWT Issuer
+      exp:
+        type: string
+        format: date
+        description: JWT Expiration date
+      secret:
+        type: string
+        description: JWT Hash string
+
+  validate-jwt-token-model:
+    type: object
+    required:
+        - token
+        - secret
+    properties:
+      token:
+        type: string
+        description: JWT Token
+      secret:
+        type: string
+        description: JWT Verification Token Secret
 
 schemes:
  - https
