@@ -13,18 +13,16 @@ trigger:
         $(Build.BuildNumber)
         latest
     
+    
     stages:
-
     - stage: Build
       displayName: Build image
-      jobs:
-
+      jobs:  
       - job: Build
         displayName: Build
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-
         - task: Docker@2
           inputs:
             containerRegistry: 'fra-01 Docker Registry'
@@ -34,7 +32,6 @@ trigger:
             tags: |
               $(Build.BuildNumber)
               latest
-
         - task: Docker@2
           inputs:
             containerRegistry: 'fra-01 Docker Registry'
@@ -43,7 +40,6 @@ trigger:
             tags: |
               $(Build.BuildNumber)
               latest
-
         - task: PublishBuildArtifacts@1
           inputs:
             pathToPublish: $(Build.ArtifactStagingDirectory)
