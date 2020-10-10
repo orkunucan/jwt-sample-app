@@ -15,6 +15,7 @@ class IndexRoute implements Route {
     this.router.get(`${this.path}jwt-validator`, this.indexController.jwtValidator);
     this.router.get(`${this.path}jwt-generator`, this.indexController.jwtGenerator);
     this.router.get(`${this.path}`, this.indexController.index);
+    this.router.get(`${this.path}health`, this.indexController.health);
   }
 }
 
