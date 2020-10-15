@@ -7,6 +7,7 @@ import * as logger from 'morgan';
 import * as path from 'path';
 import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
+import * as csp from 'helmet-csp';
 
 class App {
   public app: express.Application;
@@ -38,7 +39,9 @@ class App {
   private initializeMiddlewares() {
     if (this.env) {
       this.app.use(hpp());
-      this.app.use(helmet());
+      this.app.use(
+        helmet({contentSecurityPolicy: false})
+      );
       this.app.use(logger('combined'));
       this.app.use(cors({ origin: true, credentials: true }));
     } else {
