@@ -7,7 +7,6 @@ import * as logger from 'morgan';
 import * as path from 'path';
 import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
-import * as csp from 'helmet-csp';
 
 class App {
   public app: express.Application;
